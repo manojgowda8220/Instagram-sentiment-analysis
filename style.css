@@ -1,0 +1,59 @@
+/* General Styling */
+body {
+    background: linear-gradient(to right, #0d011a, #2575fc);
+    color: red;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    padding: 30px;
+}
+
+/* Title Styling */
+h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* File Upload Styling */
+input[type="file"] {
+    display: block;
+    margin: 20px auto;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    border: 1px solid white;
+    color: white;
+    width: 60%;
+    cursor: pointer;
+}
+
+/* Upload Button */
+button {
+    background-color: #ff4081;
+    color: white;
+    padding: 12px 25px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: #e91e63;
+    transform: scale(1.05);
+}
+
+/* Chart Container */
+.chart-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Pie Chart SVG */
+svg {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+}

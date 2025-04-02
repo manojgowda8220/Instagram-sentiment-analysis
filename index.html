@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Instagram Sentiment Analysis</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css"> <!-- Link custom CSS -->
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+<body class="container text-center">
+    <h1 class="my-4">Instagram Sentiment Analysis</h1>
+    <input type="file" id="uploadFile" class="form-control mb-3 w-50 mx-auto">
+    <button class="btn btn-primary" onclick="uploadFile()">Upload</button>
+    <div class="chart-container mt-4">
+        <svg id="pieChart" width="500" height="500"></svg>
+    </div>
+    <script>
+        async function uploadFile() {
+            const file = document.getElementById('uploadFile').files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+            const response = await fetch('/upload', { method: 'POST', body: formData });
+            const data = await response.json();
+            visualizeData(data);
+        }
+
+        function visualizeData(data) {
+            const sentimentCounts = { Positive: 0, Negative: 0, Neutral: 0 };
+            data.forEach(d => sentimentCounts[d.sentiment]++);
+
+            const pieData = Object.entries(sentimentCounts).map(([key, value]) => ({ key, value }));
+            const width = 500, height = 500, radius = Math.min(width, height) / 2;
+            const svg = d3.select("#pieChart").attr("width", width).attr("height", height)
+                .append("g").attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+            const pie = d3.pie().value(d => d.value);
+            const arc = d3.arc().innerRadius(0).outerRadius(radius);
+            const color = d3.scaleOrdinal(["#28a745", "#dc3545", "#ffc107"]);
+
+            svg.selectAll(".arc").data(pie(pieData)).enter().append("path")
+                .attr("d", arc).attr("fill", d => color(d.data.key))
+                .attr("stroke", "#fff").style("stroke-width", "2px")
+                .transition().duration(1000).attrTween("d", function(d) {
+                    const interpolate = d3.interpolate({ startAngle: 0, endAngle: 0 }, d);
+                    return function(t) { return arc(interpolate(t)); };
+                });
+        }
+    </script>
+</body>
+</html>
